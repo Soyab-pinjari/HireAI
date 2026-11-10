@@ -17,21 +17,18 @@ companyEmail:{
 phone:{
     type:String,
     trim:true,
-    minlenght:10,
+    minlength:10,
 },
 profileImage:{
 type:String,
 default:""
 },
-jobs:{
-    type:[
-  {
+jobs: {
+  type: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: "Job"
-  }
-],
-    ref:'job',
-    default:null
+  }],
+  default: []
 },
 industry:{
     type:String,
