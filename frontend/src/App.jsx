@@ -32,10 +32,11 @@ console.log("APP COMPONENT RENDERED");
       />
 
       <Route
-        path="/recruiter"
+        path="/recruiter/dashboard"
         element={
           <ProtectedRoute allowedRoles={["recruiter"]}>
             <Recruiter />
+            
           </ProtectedRoute>
         }
       />

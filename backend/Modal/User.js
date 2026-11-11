@@ -1,84 +1,88 @@
-const { default: mongoose } = require("mongoose")
+const { default: mongoose } = require("mongoose");
 
 const UserSchema = new mongoose.Schema({
-name:{
-    type:String,
-    required:true,
-    trim:true,
-},
-email:{
-    type:String,
-    required:true,
-    unique:true,
-    lowercase:true,
-    trim:true,
-},
-password:{
-    type:String,
-    required:true,
-    minlenght:6,
-},
-profileImage:{
-    type:String,
-    default:""
-},
-location:{
-    type:String,
-    default:""
-},
-phone:{
-type:String,
-minlenght:10,
-},
+  name: {
+    type: String,
+    required: true,
+    trim: true,
+  },
 
-bio:{
-type:String,
-maxlenght:500,
-default:"",
-},
-role:{
-      type: String,
-      enum: ["jobseeker","recruiter" ,"admin"],
-         default: "jobseeker",
-      required: true
-    }, 
-skills:{
-    type:[String],
-    default:[],
-},    
- experience: {
-      type: Number,
-      min: 0,
-      default: 0
-    },
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    lowercase: true,
+    trim: true,
+  },
+
+  password: {
+    type: String,
+    required: true,
+    minlength: 6,
+  },
+
+  profileImage: {
+    type: String,
+    default: "",
+  },
+
+  location: {
+    type: String,
+    default: "",
+  },
+
+  phone: {
+    type: String,
+    minlength: 10,
+  },
+
+  bio: {
+    type: String,
+    maxlength: 500,
+    default: "",
+  },
+
+  role: {
+    type: String,
+    enum: ["jobseeker", "recruiter", "admin"],
+    default: "jobseeker",
+    required: true,
+  },
+
+  
+  company: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Company",
+    default: null,
+  },
+
+  skills: {
+    type: [String],
+    default: [],
+  },
+
+  experience: {
+    type: Number,
+    min: 0,
+    default: 0,
+  },
+
   education: {
-      type: String,
-      default: ""
-    },
-     resume: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Resume",
-      default: null
-    },
+    type: String,
+    default: "",
+  },
 
-} ,{
-    timestamps: true, // Automatically creates createdAt and updatedAt
-  })
+  resume: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Resume",
+    default: null,
+  },
 
-  UserSchema.index({role:1});
-  UserSchema.index({skills:1});
+}, {
+  timestamps: true,
+});
 
-module.exports = mongoose.model('User',UserSchema);
+UserSchema.index({ role: 1 });
+UserSchema.index({ skills: 1 });
 
-
-
-
-
-
-
-
-
-
-
-
-
+module.exports = mongoose.model("User", UserSchema);

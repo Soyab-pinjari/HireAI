@@ -46,7 +46,7 @@ function Login() {
     break;
 
   case "recruiter":
-    navigate("/recruiter");
+    navigate("/recruiter/dashboard");
     break;
 
   case "admin":

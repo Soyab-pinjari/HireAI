@@ -1,6 +1,9 @@
 
 import { useEffect, useState } from "react";
 import { getRecruiterDashboard } from "../../services/api";
+import CompanyProfile from "../../component/recruiter/CompanyProfile";
+
+
 
 function Recruiter() {
   const [data, setData] = useState(null);
@@ -47,8 +50,10 @@ function Recruiter() {
   return (
     <div>
       <h1>Recruiter Dashboard</h1>
-
+{/* 
       <pre>{JSON.stringify(data, null, 2)}</pre>
+       */}
+     <CompanyProfile/>
     </div>
   );
 }
