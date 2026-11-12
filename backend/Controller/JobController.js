@@ -202,7 +202,6 @@ const updateJob = async (req, res) => {
         $pull: { jobs: job._id },
       });
 
-      // Add job to new company
       await Company.findByIdAndUpdate(updateData.company, {
         $addToSet: { jobs: job._id },
       });

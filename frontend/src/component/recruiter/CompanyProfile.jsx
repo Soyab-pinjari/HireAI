@@ -142,7 +142,7 @@ const validateEmail = (email) => {
     }
   };
 
-  //
+  
 const handleImageChange = (e) => {
   const file = e.target.files[0];
 
@@ -163,7 +163,7 @@ const handleImageChange = (e) => {
   const imageUrl = URL.createObjectURL(file);
   setPreviewImage(imageUrl);
 };
-  // INPUT CHANGE
+ 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
