@@ -9,7 +9,7 @@ import Footer from '../../component/comman/Footer'
 function Home() {
   return (
     <div>
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="min-h-[calc(100vh-70px)] flex items-center justify-center">
         <div className="w-full p-10 flex flex-col justify-center items-center text-center">

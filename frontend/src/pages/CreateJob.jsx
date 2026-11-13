@@ -1,10 +1,10 @@
-
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { createJob } from "../services/api";
+import { createJob, api } from "../services/api";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const CreateJob = () => {
+  const user = useSelector((state) => state.auth.user);
   const navigate = useNavigate();
 
   const [companies, setCompanies] = useState([]);
@@ -22,22 +22,55 @@ const CreateJob = () => {
     description: "",
   });
 
-  useEffect(() => {
-    const fetchCompanies = async () => {
-      try {
-        const res = await axios.get(
-          "http://localhost:3000/company/all"
-        );
+useEffect(() => {
+  if (!user?._id) return;
 
-        setCompanies(res.data.companies || []);
-      } catch (error) {
-        console.log(error);
+  const fetchCompanies = async () => {
+    try {
+      setLoading(true);
+
+      // Current recruiter ki company ID
+      const storageKey = `companyId_${user._id}`;
+
+      const companyId = localStorage.getItem(storageKey);
+
+      setCompanies([]);
+      setFormData((prev) => ({
+        ...prev,
+        company: "",
+      }));
+
+      if (!companyId) {
+        alert("Please create your company profile first.");
+        return;
       }
-    };
 
-    fetchCompanies();
-  }, []);
+      // Fetch only current recruiter's company
+      const res = await api.get(`/company/${companyId}`);
 
+      if (res.data.success && res.data.company) {
+        const company = res.data.company;
+
+        setCompanies([company]);
+
+        setFormData((prev) => ({
+          ...prev,
+          company: company._id,
+        }));
+      }
+
+    } catch (error) {
+      console.error("Company Fetch Error:", error);
+
+      setCompanies([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchCompanies();
+
+}, [user?._id]);
   const handleChange = (e) => {
     setFormData({
       ...formData,

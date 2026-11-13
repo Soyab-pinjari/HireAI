@@ -12,15 +12,41 @@ export const loginUser = createAsyncThunk(
   async (userData, { rejectWithValue }) => {
     try {
       const response = await UserLogin(userData);
-      return response.user;
+
+      console.log("FULL LOGIN RESPONSE:", response);
+
+      const user = response.user || response.data?.user;
+
+      if (!user) {
+        return rejectWithValue(
+          "Login successful, but user data was not received"
+        );
+      }
+
+      // Save user
+      localStorage.setItem("user", JSON.stringify(user));
+
+      // Save token only if backend returns it
+      const token =
+        response.token ||
+        response.accessToken ||
+        response.data?.token;
+
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      return user;
+
     } catch (error) {
+      console.error("Login API Error:", error.response?.data || error);
+
       return rejectWithValue(
         error.response?.data?.message || "Login failed"
       );
     }
   }
 );
-
 // LOGOUT
 export const logoutUser = createAsyncThunk(
   "auth/logout",

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../redux/authSlice";
+import { loginUser } from "../../Redux/authSlice";
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -32,35 +32,28 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    try {
-      const user = await dispatch(
-        loginUser(formData)
-      ).unwrap();
+  try {
+    const user = await dispatch(loginUser(formData)).unwrap();
 
-      // Role-based navigation
-    switch (user.role) {
-  case "jobseeker":
-    navigate("/jobseeker");
-    break;
+    console.log("New Logged In User:", user);
 
-  case "recruiter":
-    navigate("/recruiter/dashboard");
-    break;
-
-  case "admin":
-    navigate("/admin");
-    break;
-
-  default:
-    navigate("/");
-}
-
-    } catch (err) {
-      console.error("Login Error:", err);
+    // Verify role
+    if (user.role === "jobseeker") {
+      navigate("/jobseeker", { replace: true });
+    } else if (user.role === "recruiter") {
+      navigate("/recruiter/dashboard", { replace: true });
+    } else if (user.role === "admin") {
+      navigate("/admin", { replace: true });
+    } else {
+      navigate("/", { replace: true });
     }
-  };
+
+  } catch (err) {
+    console.error("Login Error:", err);
+  }
+};
 
   return (
     <div className="min-h-screen flex justify-center items-center px-4 py-8 bg-slate-50">

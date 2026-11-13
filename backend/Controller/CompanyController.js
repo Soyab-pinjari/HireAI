@@ -333,6 +333,43 @@ const deleteCompany = async (req, res) => {
   }
 };
 
+const getMyCompany = async (req, res) => {
+  try {
+    console.log("LOGGED IN USER:", req.user);
+
+    if (!req.user || req.user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Only recruiters can access company profile",
+      });
+    }
+
+    const user = await User.findById(
+      req.user.id || req.user._id
+    ).populate("company");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Recruiter not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      company: user.company || null,
+    });
+
+  } catch (error) {
+    console.error("GET MY COMPANY ERROR:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 module.exports = {
   createCompany,
@@ -340,4 +377,5 @@ module.exports = {
   getCompanyById,
   updateCompany,
   deleteCompany,
+  getMyCompany,
 };

@@ -1,6 +1,7 @@
 
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 import {
   BriefcaseBusiness,
   Menu,
@@ -10,15 +11,14 @@ import {
   Bookmark,
   Settings,
   LogOut,
-  ChevronDown
-} from 'lucide-react';
-import { useDispatch, useSelector } from 'react-redux';
-import { clearSession, logoutUser } from '../../Redux/authSlice';
+} from "lucide-react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { clearSession, logoutUser } from "../../Redux/authSlice";
 import { persistor } from "../../Redux/store";
+
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
 
   const { isAuthenticated, user } = useSelector(
     (state) => state.auth
@@ -29,35 +29,45 @@ function Navbar() {
 
   const closeMenu = () => {
     setIsOpen(false);
-    setProfileOpen(false);
   };
-const handleLogout = async () => {
-  console.log("Logout button clicked");
 
-  try {
-    const response = await dispatch(logoutUser()).unwrap();
+  // Role Based Profile Navigation
+  const handleProfileClick = () => {
+    if (user?.role === "recruiter") {
+      navigate("/recruiter/dashboard");
+    } 
+    else if (user?.role === "jobseeker") {
+      navigate("/jobseeker/dashboard");
+    } 
+    else if (user?.role === "admin") {
+      navigate("/admin/dashboard");
+    } 
+    else {
+      navigate("/login");
+    }
 
-    console.log("Logout API success:", response);
-
-  } catch (error) {
-    console.log("Logout API error:", error);
-
-  } finally {
-    // Clear Redux state
-    dispatch(clearSession());
-
-    // Clear Redux Persist
-    await persistor.purge();
-
-    // Redirect to login
     closeMenu();
-    navigate("/login", { replace: true });
-  }
-};
+  };
 
-  // Default profile image
+  // Logout
+  const handleLogout = async () => {
+    try {
+      const response = await dispatch(logoutUser()).unwrap();
+      console.log("Logout API success:", response);
+
+    } catch (error) {
+      console.log("Logout API error:", error);
+
+    } finally {
+      dispatch(clearSession());
+      await persistor.purge();
+      closeMenu();
+      navigate("/login", { replace: true });
+    }
+  };
+
   const profileImage =
-    user?.profileImage || '/default-avatar.png';
+    user?.profileImage || "/default-avatar.png";
 
   return (
     <nav className="relative flex justify-between items-center border-b border-gray-200 shadow-md px-5 md:px-8 py-4 bg-white">
@@ -74,11 +84,37 @@ const handleLogout = async () => {
 
       {/* Desktop Navigation */}
       <ul className="hidden md:flex items-center gap-5 lg:gap-7 text-gray-700 font-medium">
-        <li><Link to="/" className="hover:text-blue-700">Home</Link></li>
-        <li><Link to="/jobs" className="hover:text-blue-700">Jobs</Link></li>
-        <li><Link to="/companies" className="hover:text-blue-700">Companies</Link></li>
-        <li><Link to="/aitools" className="hover:text-blue-700">AI Tools</Link></li>
-        <li><Link to="/about" className="hover:text-blue-700">About</Link></li>
+
+        <li>
+          <Link to="/" className="hover:text-blue-700">
+            Home
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/jobs" className="hover:text-blue-700">
+            Jobs
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/companies" className="hover:text-blue-700">
+            Companies
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/aitools" className="hover:text-blue-700">
+            AI Tools
+          </Link>
+        </li>
+
+        <li>
+          <Link to="/about" className="hover:text-blue-700">
+            About
+          </Link>
+        </li>
+
       </ul>
 
       {/* Desktop Auth */}
@@ -99,93 +135,30 @@ const handleLogout = async () => {
             </Link>
           </>
         ) : (
-          <div className="relative">
 
-            {/* Profile Button */}
-            <button
-              onClick={() => setProfileOpen(!profileOpen)}
-              className="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition"
-            >
-              <img
-                src={profileImage}
-                alt="Profile"
-                onError={(e) => {
-                  e.currentTarget.onerror = null;
-                  e.currentTarget.src = '/default-avatar2.jpg';
-                }}
-                className="w-10 h-10 rounded-full object-cover border-2 border-blue-600"
-              />
+          /* Profile Image + Name */
+          <button
+            onClick={handleProfileClick}
+            className="flex items-center gap-3 px-3 py-2 rounded-full hover:bg-blue-50 transition"
+          >
 
-              <span className="font-semibold text-gray-700">
-                {user?.name || 'My Account'}
-              </span>
+            <img
+              src={profileImage}
+              alt="Profile"
+              onError={(e) => {
+                e.currentTarget.onerror = null;
+                e.currentTarget.src = "/default-avatar2.jpg";
+              }}
+              className="w-10 h-10 rounded-full object-cover border-2 border-blue-600"
+            />
 
-              <ChevronDown size={18} />
-            </button>
+            <span className="font-semibold text-gray-700">
+              {user?.name || "My Account"}
+            </span>
 
-            {/* Dropdown */}
-            {profileOpen && (
-              <div className="absolute right-0 top-14 w-56 bg-white shadow-xl rounded-xl border border-gray-100 py-2 z-50">
-
-                <div className="px-4 py-3 border-b">
-                  <p className="font-semibold text-gray-800">
-                    {user?.name || 'User'}
-                  </p>
-                  <p className="text-xs text-gray-500 truncate">
-                    {user?.email}
-                  </p>
-                </div>
-
-                <Link
-                  to="/profile"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50"
-                >
-                  <User size={18} />
-                  My Profile
-                </Link>
-
-                <Link
-                  to="/my-applications"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50"
-                >
-                  <FileText size={18} />
-                  My Applications
-                </Link>
-
-                <Link
-                  to="/saved-jobs"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50"
-                >
-                  <Bookmark size={18} />
-                  Saved Jobs
-                </Link>
-
-                <Link
-                  to="/settings"
-                  onClick={closeMenu}
-                  className="flex items-center gap-3 px-4 py-3 hover:bg-blue-50"
-                >
-                  <Settings size={18} />
-                  Settings
-                </Link>
-
-                <div className="border-t mt-1 pt-1">
-                  <button
-                    onClick={handleLogout}
-                    className="flex items-center gap-3 px-4 py-3 w-full text-red-600 hover:bg-red-50"
-                  >
-                    <LogOut size={18} />
-                    Logout
-                  </button>
-                </div>
-
-              </div>
-            )}
-          </div>
+          </button>
         )}
+
       </div>
 
       {/* Mobile Menu Button */}
@@ -199,15 +172,29 @@ const handleLogout = async () => {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="absolute top-full left-0 w-full bg-white shadow-lg border-t z-50 md:hidden">
+        <div className="absolute top-full sticky top-0 z-50 left-0 w-full bg-white shadow-lg border-t z-50 md:hidden">
 
           <ul className="flex flex-col gap-5 py-6 px-6 text-gray-700 font-medium">
 
-            <li><Link to="/" onClick={closeMenu}>Home</Link></li>
-            <li><Link to="/jobs" onClick={closeMenu}>Jobs</Link></li>
-            <li><Link to="/companies" onClick={closeMenu}>Companies</Link></li>
-            <li><Link to="/aitools" onClick={closeMenu}>AI Tools</Link></li>
-            <li><Link to="/about" onClick={closeMenu}>About</Link></li>
+            <li>
+              <Link to="/" onClick={closeMenu}>Home</Link>
+            </li>
+
+            <li>
+              <Link to="/jobs" onClick={closeMenu}>Jobs</Link>
+            </li>
+
+            <li>
+              <Link to="/companies" onClick={closeMenu}>Companies</Link>
+            </li>
+
+            <li>
+              <Link to="/aitools" onClick={closeMenu}>AI Tools</Link>
+            </li>
+
+            <li>
+              <Link to="/about" onClick={closeMenu}>About</Link>
+            </li>
 
             {!isAuthenticated ? (
               <>
@@ -225,7 +212,13 @@ const handleLogout = async () => {
               </>
             ) : (
               <>
-                <div className="flex items-center gap-3 border-t pt-4">
+
+                {/* Mobile Profile */}
+                <button
+                  onClick={handleProfileClick}
+                  className="flex items-center gap-3 border-t pt-4 text-left"
+                >
+
                   <img
                     src={profileImage}
                     alt="Profile"
@@ -234,40 +227,50 @@ const handleLogout = async () => {
 
                   <div>
                     <p className="font-semibold">
-                      {user?.name || 'My Account'}
+                      {user?.name || "My Account"}
                     </p>
+
                     <p className="text-xs text-gray-500">
                       {user?.email}
                     </p>
                   </div>
-                </div>
 
-                <Link to="/profile" onClick={closeMenu}>
-                  My Profile
-                </Link>
+                </button>
 
                 <Link to="/my-applications" onClick={closeMenu}>
-                  My Applications
+                  <span className="flex items-center gap-2">
+                    <FileText size={18} />
+                    My Applications
+                  </span>
                 </Link>
 
                 <Link to="/saved-jobs" onClick={closeMenu}>
-                  Saved Jobs
+                  <span className="flex items-center gap-2">
+                    <Bookmark size={18} />
+                    Saved Jobs
+                  </span>
                 </Link>
 
                 <Link to="/settings" onClick={closeMenu}>
-                  Settings
+                  <span className="flex items-center gap-2">
+                    <Settings size={18} />
+                    Settings
+                  </span>
                 </Link>
 
                 <button
                   onClick={handleLogout}
-                  className="text-left text-red-600 border-t pt-4"
+                  className="flex items-center gap-2 text-left text-red-600 border-t pt-4"
                 >
+                  <LogOut size={18} />
                   Logout
                 </button>
+
               </>
             )}
 
           </ul>
+
         </div>
       )}
 

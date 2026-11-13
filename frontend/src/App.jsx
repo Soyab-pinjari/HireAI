@@ -10,13 +10,14 @@ import ProtectedRoute from "./component/comman/ProtectedRoute";
 import Jobseeker from "./pages/Dashboard/Jobseeker";
 import Recruiter from "./pages/Dashboard/Recruiter";
 import Admin from "./pages/Dashboard/Admin";
+import Layout from "./Layout";
 
 function App() {
-console.log("APP COMPONENT RENDERED");
+
   return (
     <Routes>
 
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Layout />} />
 
       <Route path="/login" element={<Login />} />
 

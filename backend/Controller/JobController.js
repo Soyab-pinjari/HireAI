@@ -78,6 +78,72 @@ const createJob = async (req, res) => {
   }
 };
 
+const getMyCompanyJobs = async (req, res) => {
+  try {
+    // 1. Recruiter validation
+    if (!req.user || req.user.role !== "recruiter") {
+      return res.status(403).json({
+        success: false,
+        message: "Only recruiters can access their jobs",
+      });
+    }
+
+    // 2. Find logged-in recruiter
+    const user = await User.findById(req.user.id)
+      .select("company");
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "Recruiter not found",
+      });
+    }
+
+    // 3. Check company
+    if (!user.company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company profile not found",
+        jobs: [],
+      });
+    }
+
+    // 4. Fetch only recruiter's company jobs
+    const company = await Company.findById(user.company)
+      .populate({
+        path: "jobs",
+        options: {
+          sort: { createdAt: -1 },
+        },
+      });
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found",
+        jobs: [],
+      });
+    }
+
+    // 5. Success response
+    return res.status(200).json({
+      success: true,
+      message: "Company jobs fetched successfully",
+      company: company.companyName,
+      totalJobs: company.jobs.length,
+      jobs: company.jobs,
+    });
+
+  } catch (error) {
+    console.error("Get My Company Jobs Error:", error);
+
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 
 
 const getAllJobs = async (req, res) => {
@@ -317,4 +383,5 @@ module.exports = {
   updateJob,
   deleteJob,
   getJobsByCompany,
+  getMyCompanyJobs,
 };

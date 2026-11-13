@@ -33,11 +33,11 @@ function Footer() {
           <div>
             <h3 className="font-semibold mb-4 ">AI Features</h3>
 
-            <div className="flex flex-col gap-3 text-sm text-slate-400">
-              <h2>AI Resume Analyzer</h2>
+            <div className="flex flex-col gap-3 text-sm font text-base text-slate-400">
+              <span>AI Resume Analyzer</span>
             
-              <h2>Job Recommendations</h2>
-              <h2>Resume–Job Matching</h2>
+              <span>Job Recommendations</span>
+              <span>Resume–Job Matching</span>
             </div>
           </div>
 

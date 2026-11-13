@@ -61,3 +61,8 @@ export const deleteJob = (id) =>
 
 export const getJobsByCompany = (companyId) =>
   api.get(`/job/company/${companyId}`);
+
+export const getMyCompanyJobs = async () => {
+  const { data } = await api.get("/job/company-jobs");
+  return data;
+};

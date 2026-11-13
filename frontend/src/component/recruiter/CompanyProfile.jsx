@@ -1,4 +1,4 @@
-
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { api } from "../../services/api";
 import {
@@ -95,6 +95,7 @@ const CompanyProfile = () => {
   const [fetching, setFetching] = useState(true);
   const [imageFile, setImageFile] = useState(null);
 const [previewImage, setPreviewImage] = useState("");
+  const user = useSelector((state) => state.auth.user);
   const [message, setMessage] = useState({
     type: "",
     text: "",
@@ -104,22 +105,27 @@ const validateEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
   return emailRegex.test(email.trim());
 };
-  useEffect(() => {
-    fetchCompany();
-  }, []);
+
+console.log("Redux User:", user);
+console.log("User ID:", user?._id);
+console.log("User ID alternative:", user?.id);
+const recruiterId = user?.id || user?._id;
+
+useEffect(() => {
+  if (!recruiterId) {
+    setFetching(false);
+    return;
+  }
+
+  let isMounted = true;
 
   const fetchCompany = async () => {
     try {
       setFetching(true);
 
-      // Replace this with the logged-in recruiter's company ID.
-      const recruiterCompanyId = localStorage.getItem("companyId");
+      const { data } = await api.get("/company/my-company");
 
-      if (!recruiterCompanyId) {
-        return;
-      }
-
-      const { data } = await api.get(`/company/${recruiterCompanyId}`);
+      if (!isMounted) return;
 
       if (data.success && data.company) {
         setCompanyId(data.company._id);
@@ -129,20 +135,38 @@ const validateEmail = (email) => {
           ...data.company,
           foundedYear: data.company.foundedYear || "",
         });
+      } else {
+        setCompanyId(null);
+        setFormData(initialForm);
       }
+
     } catch (error) {
+      if (!isMounted) return;
+
+      console.error("Company Fetch Error:", error);
+
       setMessage({
         type: "error",
-        text:
-          error.response?.data?.message ||
+        text: error.response?.data?.message ||
           "Unable to fetch company profile",
       });
+
     } finally {
-      setFetching(false);
+      if (isMounted) {
+        setFetching(false);
+      }
     }
   };
 
-  
+  fetchCompany();
+
+  return () => {
+    isMounted = false;
+  };
+
+}, [recruiterId]);
+
+
 const handleImageChange = (e) => {
   const file = e.target.files[0];
 
@@ -174,7 +198,6 @@ const handleImageChange = (e) => {
   };
 const handleSubmit = async (e) => {
   e.preventDefault();
-
 const email = formData.companyEmail.trim();
 
 if (!email) {
@@ -242,8 +265,10 @@ console.log("FORM SUBMIT TRIGGERED");
 
       setCompanyId(savedCompany._id);
 
-      localStorage.setItem("companyId", savedCompany._id);
-
+      lolocalStorage.setItem(
+  `companyId_${user._id}`,
+  savedCompany._id
+);
       setFormData({
         ...initialForm,
         ...savedCompany,
@@ -558,13 +583,7 @@ console.log("FORM SUBMIT TRIGGERED");
           {/* SUBMIT */}
           <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
 
-            <button
-              type="button"
-              onClick={fetchCompany}
-              className="rounded-xl border border-gray-200 bg-white px-6 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50"
-            >
-              Refresh
-            </button>
+            
 
             <button
               type="submit"

@@ -6,9 +6,10 @@ import { getRecruiterDashboard } from "../../services/api";
 import CompanyProfile from "../../component/recruiter/CompanyProfile";
 import Sidebar from "../../component/recruiter/Sidebar";
 import CreateJob from "../CreateJob";
-import AllJobs from "../AllJobs";
-
+import AllJobs from "../public/AllJobs";
+import {Link} from 'react-router-dom'
 import Applicants from "../../component/recruiter/Applicants";
+import {ArrowLeft} from 'lucide-react'
 function Recruiter() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -16,54 +17,73 @@ function Recruiter() {
 
   const [activePage, setActivePage] = useState("dashboard");
 
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const response = await getRecruiterDashboard();
-        setData(response);
-      } catch (error) {
-        setError(
-          error.response?.data?.message ||
-          error.message ||
-          "Something went wrong"
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
+useEffect(() => {
+  const fetchDashboard = async () => {
+    try {
+      setLoading(true);
+      setError("");
+      setData(null);
 
-    fetchDashboard();
-  }, []);
+    const response = await getRecruiterDashboard();
+
+console.log("LOCAL STORAGE USER:",
+  JSON.parse(localStorage.getItem("user"))
+);
+
+console.log("DASHBOARD API RESPONSE:", response);
+
+setData(response);
+    } catch (error) {
+      setError(
+        error.response?.data?.message ||
+        error.message ||
+        "Something went wrong"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchDashboard();
+}, []);
 
   const renderContent = () => {
     switch (activePage) {
       case "dashboard":
         return (
-          <div>
-            <h1 className="text-3xl font-bold text-gray-800">
-              Recruiter Dashboard
-            </h1>
+   <div>
+  <h1 className="text-3xl font-bold text-gray-800">
+    Recruiter Dashboard
+  </h1>
 
-            <p className="text-gray-500 mt-2">
-              Welcome to your recruiter dashboard.
-            </p>
+  <p className="text-gray-500 mt-2">
+    Welcome to your recruiter dashboard.
+  </p>
 
-            {loading ? (
-              <p className="mt-6">Loading dashboard...</p>
-            ) : error ? (
-              <p className="text-red-500 mt-6">{error}</p>
-            ) : (
-              <div className="mt-6 bg-white p-6 rounded-xl shadow-sm">
-                <h2 className="font-semibold text-lg">
-                  Dashboard Overview
-                </h2>
+  <Link
+    to="/"
+    className="inline-flex items-center gap-2 mt-4 text-blue-700 font-medium hover:text-blue-900 transition-colors"
+  >
+    <ArrowLeft size={18} />
+    <span>Back to Home</span>
+  </Link>
 
-                <p className="text-gray-500 mt-2">
-                  Your recruiter account is ready.
-                </p>
-              </div>
-            )}
-          </div>
+  {loading ? (
+    <p className="mt-6">Loading dashboard...</p>
+  ) : error ? (
+    <p className="text-red-500 mt-6">{error}</p>
+  ) : (
+    <div className="mt-6 bg-white p-6 rounded-xl shadow-sm">
+      <h2 className="font-semibold text-lg">
+        Dashboard Overview
+      </h2>
+
+      <p className="text-gray-500 mt-2">
+        Your recruiter account is ready.
+      </p>
+    </div>
+  )}
+</div>
         );
 
       case "profile":

@@ -64,7 +64,11 @@ export const persistor = persistStore(store);
 
 // Then check its status
 console.log("Persistor initial:", persistor.getState());
+console.log("USER:", localStorage.getItem("user"));
 
+console.log("TOKEN:", localStorage.getItem("token"));
+
+console.log("PERSIST:", localStorage.getItem("persist:root"));
 persistor.subscribe(() => {
   console.log("Persistor updated:", persistor.getState());
 });
