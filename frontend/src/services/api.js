@@ -64,5 +64,6 @@ export const getJobsByCompany = (companyId) =>
 
 export const getMyCompanyJobs = async () => {
   const { data } = await api.get("/job/company-jobs");
+  console.log("api",data.jobs);
   return data;
 };

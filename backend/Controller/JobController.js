@@ -1,6 +1,7 @@
 
 const Job = require("../Modal/Job");
 const Company = require("../Modal/Company");
+const User = require("../Modal/User");
 
 const createJob = async (req, res) => {
   try {
@@ -109,13 +110,17 @@ const getMyCompanyJobs = async (req, res) => {
     }
 
     // 4. Fetch only recruiter's company jobs
-    const company = await Company.findById(user.company)
-      .populate({
-        path: "jobs",
-        options: {
-          sort: { createdAt: -1 },
-        },
-      });
+ const company = await Company.findById(user.company)
+  .populate({
+    path: "jobs",
+    options: {
+      sort: { createdAt: -1 },
+    },
+    populate: {
+      path: "company",
+      select: "companyName profileImage",
+    },
+  });
 
     if (!company) {
       return res.status(404).json({

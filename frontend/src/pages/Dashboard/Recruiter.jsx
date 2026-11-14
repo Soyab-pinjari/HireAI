@@ -10,6 +10,7 @@ import AllJobs from "../public/AllJobs";
 import {Link} from 'react-router-dom'
 import Applicants from "../../component/recruiter/Applicants";
 import {ArrowLeft} from 'lucide-react'
+import PublishedJobs from "../../component/recruiter/PublishedJobs";
 function Recruiter() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -93,7 +94,7 @@ setData(response);
         return <CreateJob />;
 
       case "jobs":
-        return <AllJobs />;
+        return < PublishedJobs/>;
 
       case "applicants":
         return <Applicants />;

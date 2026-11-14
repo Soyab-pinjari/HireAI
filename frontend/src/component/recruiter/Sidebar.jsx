@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   clearSession,
@@ -23,7 +23,8 @@ import { persistor } from "../../Redux/store";
 function Sidebar({ activePage, setActivePage }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+ const user = useSelector((state)=>state.auth.user);
+   console.log("Logged In User:", user);
   const menuItems = [
     {
       name: "Dashboard",
@@ -86,23 +87,29 @@ function Sidebar({ activePage, setActivePage }) {
       </div>
 
       {/* Recruiter Info */}
-      <div className="p-5">
-        <div className="flex items-center gap-3 bg-indigo-50 p-3 rounded-xl">
-          <div className="w-11 h-11 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
-            R
-          </div>
+     <div className="p-5">
+  <div className="flex items-center gap-3 bg-indigo-50 p-3 rounded-xl min-w-0">
 
-          <div>
-            <h3 className="font-semibold text-gray-800">
-              Recruiter
-            </h3>
+    <div className="w-11 h-11 shrink-0 bg-indigo-600 text-white rounded-full flex items-center justify-center font-bold">
+      <img
+        src={user?.profileImage || "/default-avatar2.jpg"}
+        alt="Profile"
+        className="w-full h-full rounded-full object-cover"
+      />
+    </div>
 
-            <p className="text-xs text-gray-500">
-              Manage your account
-            </p>
-          </div>
-        </div>
-      </div>
+    <div className="flex-1 min-w-0">
+      <h3 className="font-semibold text-base text-gray-800 break-words whitespace-normal">
+        {user?.name}
+      </h3>
+
+      <p className="text-xs text-gray-500">
+        Manage your account
+      </p>
+    </div>
+
+  </div>
+</div>
 
       {/* Menu */}
       <div className="px-4 flex-1">

@@ -22,31 +22,18 @@ const CreateJob = () => {
     description: "",
   });
 
+
+
 useEffect(() => {
-  if (!user?._id) return;
+  if (!user?._id && !user?.id) return;
 
   const fetchCompanies = async () => {
     try {
       setLoading(true);
 
-      // Current recruiter ki company ID
-      const storageKey = `companyId_${user._id}`;
+      const res = await api.get("/company/my-company");
 
-      const companyId = localStorage.getItem(storageKey);
-
-      setCompanies([]);
-      setFormData((prev) => ({
-        ...prev,
-        company: "",
-      }));
-
-      if (!companyId) {
-        alert("Please create your company profile first.");
-        return;
-      }
-
-      // Fetch only current recruiter's company
-      const res = await api.get(`/company/${companyId}`);
+      console.log("My Company Response:", res.data);
 
       if (res.data.success && res.data.company) {
         const company = res.data.company;
@@ -57,10 +44,16 @@ useEffect(() => {
           ...prev,
           company: company._id,
         }));
+      } else {
+        setCompanies([]);
+        alert("Please create your company profile first.");
       }
 
     } catch (error) {
-      console.error("Company Fetch Error:", error);
+      console.error(
+        "Company Fetch Error:",
+        error.response?.data || error
+      );
 
       setCompanies([]);
     } finally {
@@ -70,7 +63,9 @@ useEffect(() => {
 
   fetchCompanies();
 
-}, [user?._id]);
+}, [user?._id, user?.id]);
+
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
