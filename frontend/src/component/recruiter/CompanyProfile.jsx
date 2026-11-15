@@ -106,9 +106,6 @@ const validateEmail = (email) => {
   return emailRegex.test(email.trim());
 };
 
-console.log("Redux User:", user);
-console.log("User ID:", user?._id);
-console.log("User ID alternative:", user?.id);
 const recruiterId = user?.id || user?._id;
 
 useEffect(() => {
@@ -142,9 +139,6 @@ useEffect(() => {
 
     } catch (error) {
       if (!isMounted) return;
-
-      console.error("Company Fetch Error:", error);
-
       setMessage({
         type: "error",
         text: error.response?.data?.message ||

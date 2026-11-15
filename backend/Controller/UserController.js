@@ -26,7 +26,6 @@ const getJobseekerDashboard = async (req, res) => {
 };
 
 
-// RECRUITER DASHBOARD
 const getRecruiterDashboard = async (req, res) => {
   try {
     const user = await User.findById(req.user.id)
@@ -54,7 +53,6 @@ const getRecruiterDashboard = async (req, res) => {
 };
 
 
-// ADMIN DASHBOARD
 const getAdminDashboard = async (req, res) => {
   try {
     const admin = await User.findById(req.user.id)

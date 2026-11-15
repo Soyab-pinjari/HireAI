@@ -21,6 +21,11 @@ export const UserLogout = async () => {
   return data;
 };
 
+export const CheckAuth = async () => {
+  const response = await api.get("/auth/check-auth");
+  return response.data;
+};
+
 export const getJobseekerDashboard = async () => {
   const { data } = await api.get("/user/jobseeker/dashboard");
   return data;
@@ -66,4 +71,9 @@ export const getMyCompanyJobs = async () => {
   const { data } = await api.get("/job/company-jobs");
   console.log("api",data.jobs);
   return data;
+};
+
+export const GetJobDetails = async (jobId) => {
+  const response = await api.get(`/job/job-details/${jobId}`);
+  return response.data;
 };

@@ -2,6 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import {
+  CheckAuth,
   UserLogin,
   UserLogout
 } from "../services/api.js";
@@ -13,33 +14,18 @@ export const loginUser = createAsyncThunk(
     try {
       const response = await UserLogin(userData);
 
-      console.log("FULL LOGIN RESPONSE:", response);
+      console.log("LOGIN RESPONSE:", response);
 
-      const user = response.user || response.data?.user;
+      const user = response.user;
 
-      if (!user) {
-        return rejectWithValue(
-          "Login successful, but user data was not received"
-        );
-      }
-
-      // Save user
-      localStorage.setItem("user", JSON.stringify(user));
-
-      // Save token only if backend returns it
-      const token =
-        response.token ||
-        response.accessToken ||
-        response.data?.token;
-
-      if (token) {
-        localStorage.setItem("token", token);
+      if (!response.success || !user) {
+        return rejectWithValue("User data not received");
       }
 
       return user;
 
     } catch (error) {
-      console.error("Login API Error:", error.response?.data || error);
+      console.error("LOGIN ERROR:", error);
 
       return rejectWithValue(
         error.response?.data?.message || "Login failed"
@@ -61,7 +47,20 @@ export const logoutUser = createAsyncThunk(
     }
   }
 );
+export const checkAuth = createAsyncThunk(
+  "auth/checkAuth",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await CheckAuth();
+      return response.user;
 
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data?.message || "Authentication failed"
+      );
+    }
+  }
+);
 const authSlice = createSlice({
   name: "auth",
 
@@ -92,12 +91,10 @@ const authSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-
       .addCase(loginUser.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload;
         state.isAuthenticated = true;
-        state.error = null;
       })
 
       .addCase(loginUser.rejected, (state, action) => {
@@ -120,7 +117,23 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(checkAuth.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(checkAuth.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.isAuthenticated = true;
+      })
+
+      .addCase(checkAuth.rejected, (state) => {
+        state.loading = false;
+        state.user = null;
+        state.isAuthenticated = false;
+      })
+      
   }
 });
 

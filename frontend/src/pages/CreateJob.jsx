@@ -93,7 +93,7 @@ useEffect(() => {
 
       alert(res.data.message);
 
-      navigate("/jobs");
+      navigate("/recruiter/dashboard");
 
     } catch (error) {
       alert(

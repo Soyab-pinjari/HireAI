@@ -11,9 +11,17 @@ import Jobseeker from "./pages/Dashboard/Jobseeker";
 import Recruiter from "./pages/Dashboard/Recruiter";
 import Admin from "./pages/Dashboard/Admin";
 import Layout from "./Layout";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./Redux/authSlice";
+import JobPage from "./pages/public/JobPage";
 
 function App() {
+const dispatch = useDispatch();
 
+useEffect(() => {
+  dispatch(checkAuth());
+}, [dispatch]);
   return (
     <Routes>
 
@@ -22,7 +30,7 @@ function App() {
       <Route path="/login" element={<Login />} />
 
       <Route path="/register" element={<Registration />} />
-
+<Route path="/jobs/:jobId" element={<JobPage />} />
       <Route
         path="/jobseeker"
         element={

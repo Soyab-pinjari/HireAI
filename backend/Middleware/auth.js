@@ -75,4 +75,18 @@ const authenticate = async (req, res, next) => {
   };
 };
 
-module.exports={authorize,authenticate}
+ const checkAuth = async (req, res) => {
+  try {
+    return res.status(200).json({
+      success: true,
+      user: req.user
+    });
+
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong"
+    });
+  }
+};
+module.exports={authorize,authenticate,checkAuth}

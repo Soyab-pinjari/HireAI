@@ -26,6 +26,7 @@ const createCompany = async (req, res) => {
   twitter,
 } = req.body;
     // 1. Recruiter validation
+
     if (!req.user || req.user.role !== "recruiter") {
       return res.status(403).json({
         success: false,
@@ -182,8 +183,6 @@ const getCompanyById = async (req, res) => {
 };
 const updateCompany = async (req, res) => {
   try {
-console.log("FILE RECEIVED:", req.file);
-console.log("BODY:", req.body);
     // 1. Request body se fields lo
     const {
       companyName,
@@ -224,9 +223,8 @@ console.log("BODY:", req.body);
 
       profileImage = uploadedImage.secure_url;
     }
-    console.log("FINAL PROFILE IMAGE:", profileImage);
+  
 
-    // 5. YAHAN updateData add karo
    const updateData = {
   companyName,
   companyEmail,
@@ -275,7 +273,9 @@ console.log("BODY:", req.body);
     });
   }
 };
-// DELETE COMPANY
+
+
+
 const deleteCompany = async (req, res) => {
   const session = await mongoose.startSession();
 

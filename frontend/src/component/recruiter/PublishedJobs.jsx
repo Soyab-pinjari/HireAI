@@ -9,10 +9,11 @@ function PublishedJobs() {
    const [loading, setLoading] = useState(true);
    const [search, setSearch] = useState("");
    const [jobType, setJobType] = useState("All");
+   
    const fetchJobs = async () => {
        try {
            const res = await getMyCompanyJobs();
-       
+        console.log("job response",res);
            setJobs(res.jobs || []);
         } catch (error) {
             console.log(error);

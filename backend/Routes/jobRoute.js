@@ -5,7 +5,7 @@ const router = express.Router();
 const {
   createJob,
   getAllJobs,
-  getJobById,
+getJobDetails,
   updateJob,
   deleteJob,
   getJobsByCompany,
@@ -13,14 +13,15 @@ const {
 } = require("../Controller/JobController");
 const { authenticate, authorize } = require("../Middleware/auth");
 
-router.post("/create", createJob);
+router.post("/create", authenticate,authorize("recruiter"),createJob);
 
-
+router.get("/company-jobs",authenticate,authorize("recruiter"),getMyCompanyJobs);
 router.get("/all", getAllJobs);
 
+router.get("/job-details/:jobId", getJobDetails);
+
 // router.get("/company/:companyId", getJobsByCompany);
-router.get("/company-jobs",authenticate,authorize("recruiter"),getMyCompanyJobs);
-router.get("/:id", getJobById);
+
 
 router.put("/update/:id", updateJob);
 
