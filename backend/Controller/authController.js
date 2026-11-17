@@ -68,8 +68,6 @@ try {
         message: "Invalid email "
       });
     }
-    console.log("2. User found:", !!user);
-
       const isMatch = await bcrypt.compare(
       password,
       user.password

@@ -19,7 +19,7 @@ import { persistor } from "../../Redux/store";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
+ const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const { isAuthenticated, user } = useSelector(
     (state) => state.auth
   );
@@ -52,9 +52,9 @@ console.log(isAuthenticated)
   // Logout
   const handleLogout = async () => {
     try {
-      const response = await dispatch(logoutUser()).unwrap();
-      console.log("Logout API success:", response);
-
+      await dispatch(logoutUser()).unwrap();
+      
+       setIsLogoutOpen(false);
     } catch (error) {
       console.log("Logout API error:", error);
 
@@ -260,6 +260,7 @@ console.log(isAuthenticated)
 
                 <button
                   onClick={handleLogout}
+                  
                   className="flex items-center gap-2 text-left text-red-600 border-t pt-4"
                 >
                   <LogOut size={18} />

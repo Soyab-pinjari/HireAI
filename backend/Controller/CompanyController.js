@@ -335,7 +335,7 @@ const deleteCompany = async (req, res) => {
 
 const getMyCompany = async (req, res) => {
   try {
-    console.log("LOGGED IN USER:", req.user);
+  
 
     if (!req.user || req.user.role !== "recruiter") {
       return res.status(403).json({

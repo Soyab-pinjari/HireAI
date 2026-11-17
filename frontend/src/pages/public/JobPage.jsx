@@ -70,10 +70,10 @@ const JobPage = () => {
 
         {/* Back Button */}
         <Link
-          to="/jobs"
+          to="/"
           className="text-blue-600 hover:underline mb-6 inline-block"
         >
-          ← Back to Jobs
+          ← Back to home
         </Link>
 
         {/* Job Header */}

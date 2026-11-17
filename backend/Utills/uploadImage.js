@@ -1,16 +1,16 @@
+
 const cloudinary = require("../Config/cloudinary");
 
 const uploadImage = async (buffer, folder) => {
   return new Promise((resolve, reject) => {
-
     const stream = cloudinary.uploader.upload_stream(
       {
-        folder: folder,
+        folder,
         resource_type: "image",
       },
       (error, result) => {
         if (error) {
-          console.log("CLOUDINARY ERROR:", error);
+          console.error("CLOUDINARY ERROR:", error);
           return reject(error);
         }
 

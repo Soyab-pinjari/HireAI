@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./Redux/authSlice";
 import JobPage from "./pages/public/JobPage";
+import EditJob from "./pages/EditJob";
 
 function App() {
 const dispatch = useDispatch();
@@ -24,7 +25,7 @@ useEffect(() => {
 }, [dispatch]);
   return (
     <Routes>
-
+     <Route path="/edit-job/:id" element={<EditJob />} />
       <Route path="/" element={<Layout />} />
 
       <Route path="/login" element={<Login />} />

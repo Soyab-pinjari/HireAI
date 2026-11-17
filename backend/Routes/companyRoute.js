@@ -12,7 +12,6 @@ const {
 } = require("../Controller/CompanyController");
 const upload = require("../Middleware/upload");
 const { authenticate, authorize } = require("../Middleware/auth");
-const { getMyCompanyJobs } = require("../Controller/JobController");
 
 router.post(
   "/create",
@@ -28,8 +27,8 @@ router.get("/my-company",authenticate,
   router.get("/all", getAllCompanies);
   router.get("/:id", getCompanyById);
 
-router.get("/company-jobs",authenticate,
-  authorize("recruiter"),getMyCompanyJobs)
+// router.get("/company-jobs",authenticate,
+//   authorize("recruiter"),getMyCompanyJobs)
   
 router.put(
   "/update/:id",

@@ -1,19 +1,23 @@
 
-import { getMyCompanyJobs } from '../../services/api';
+import { getMyCompanyJobs,deleteJob  } from '../../services/api';
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import React, { useEffect, useState } from "react";
+import ConfirmDelete from '../comman/ConfirmDelete';
 function PublishedJobs() {
  const [jobs, setJobs] = useState([]);
    const [loading, setLoading] = useState(true);
    const [search, setSearch] = useState("");
    const [jobType, setJobType] = useState("All");
-   
+  const [isDeleteOpen, setIsDeleteOpen] = useState(false);
+const [selectedJobId, setSelectedJobId] = useState(null);
+const [deleting, setDeleting] = useState(false);
+   const navigate = useNavigate();
    const fetchJobs = async () => {
        try {
            const res = await getMyCompanyJobs();
-        console.log("job response",res);
+       
            setJobs(res.jobs || []);
         } catch (error) {
             console.log(error);
@@ -50,8 +54,40 @@ function PublishedJobs() {
        </div>
      );
     }
-    console.log("filterdjobs",filteredJobs)
- 
+
+const handleDelete = (id) => {
+  setSelectedJobId(id);
+  setIsDeleteOpen(true);
+};
+
+const confirmDelete = async () => {
+  if (!selectedJobId || deleting) return;
+
+  try {
+    setDeleting(true);
+
+    await deleteJob(selectedJobId);
+
+    setJobs((prevJobs) =>
+      prevJobs.filter((job) => job._id !== selectedJobId)
+    );
+
+    setIsDeleteOpen(false);
+    setSelectedJobId(null);
+
+    alert("Job deleted successfully!");
+
+  } catch (error) {
+    console.log("DELETE ERROR:", error);
+
+    alert(
+      error.response?.data?.message || "Failed to delete job"
+    );
+
+  } finally {
+    setDeleting(false);
+  }
+};
   return (
     <div className="min-h-screen bg-slate-50">
 
@@ -239,23 +275,52 @@ function PublishedJobs() {
                     </div>
                   </div>
 
-                  {/* View Details */}
-                  <div className="mt-auto pt-6">
-                    <Link
-                      to={`/jobs/${job._id}`}
-                      className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 text-sm font-semibold transition"
-                    >
-                      View Details & Apply →
-                    </Link>
-                  </div>
+          
+                    <div className="mt-auto pt-6 flex flex-col gap-3">
 
+                      {/* View Details */}
+                      <Link
+                        to={`/jobs/${job._id}`}
+                        className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 text-sm font-semibold transition"
+                      >
+                        View Details & Apply →
+                      </Link>
+
+                      <div className='flex gap-6'>
+
+                      {/* Edit Job */}
+                      <button
+                        onClick={() => navigate(`/edit-job/${job._id}`)}
+                        className="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 text-sm font-semibold transition"
+                      >
+                        Edit Job
+                      </button>
+
+
+                   <button
+                              onClick={() => handleDelete(job._id)}
+                              className="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-3 text-sm font-semibold transition"
+                            >
+                              Delete
+                            </button>
+                
+                        </div>
+                    </div>
+       
                 </div>
               );
             })}
 
           </div>
         )}
-
+                          <ConfirmDelete
+                isOpen={isDeleteOpen}
+                onClose={() => {
+                  setIsDeleteOpen(false);
+                  setSelectedJobId(null);
+                }}
+                onConfirm={confirmDelete}
+              />
       </main>
     </div>
   )

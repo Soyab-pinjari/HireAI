@@ -1,5 +1,5 @@
 
-import React from "react";
+import React, { useState } from "react";
 
 import {
   LayoutDashboard,
@@ -19,9 +19,12 @@ import {
 } from "../../Redux/authSlice";
 
 import { persistor } from "../../Redux/store";
+import ConfirmPopup from "../comman/ConfirmPopup";
 
 function Sidebar({ activePage, setActivePage }) {
   const navigate = useNavigate();
+    const [isLogoutOpen, setIsLogoutOpen] = useState(false);
+
   const dispatch = useDispatch();
  const user = useSelector((state)=>state.auth.user);
    console.log("Logged In User:", user);
@@ -57,6 +60,7 @@ function Sidebar({ activePage, setActivePage }) {
  const handleLogout = async () => {
   try {
     await dispatch(logoutUser()).unwrap();
+     setIsLogoutOpen(false);
   } catch (error) {
     console.log("Logout API error:", error);
   } finally {
@@ -141,20 +145,24 @@ function Sidebar({ activePage, setActivePage }) {
       </div>
 
       {/* Logout */}
-      <div className="p-4 border-t">
-        <button
-          onClick={handleLogout}
-          className="w-full flex items-center gap-3 px-4 py-3 text-red-500 hover:bg-red-50 rounded-xl transition"
-        >
-          <LogOut size={20} />
-          Logout
-        </button>
+    <div className="flex justify-center p-3">
+<button
+  onClick={() => setIsLogoutOpen(true)}
+  className="flex border-2 w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-base font-semibold text-red-500  hover:bg-red-500 hover:text-white transition ease"
+>
+  Logout
+  <LogOut size={22} />
+</button>
 
-        <p className="text-xs text-center text-gray-400 mt-4">
+<ConfirmPopup
+  isOpen={isLogoutOpen}
+  onClose={() => setIsLogoutOpen(false)}
+  onConfirm={handleLogout}
+/>
+</div>
+  <p className="text-xs text-center text-gray-400 mt-4">
           © 2026 JobPortal
         </p>
-      </div>
-
     </aside>
   );
 }

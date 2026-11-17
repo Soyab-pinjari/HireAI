@@ -57,8 +57,10 @@ export const getJobById = (id) =>
   api.get(`/job/${id}`);
 
 
-export const updateJob = (id, data) =>
-  api.put(`/job/update/${id}`, data);
+export const updateJob = async (id, data) => {
+  const response = await api.put(`/job/update/${id}`, data);
+  return response.data;
+};
 
 
 export const deleteJob = (id) =>
