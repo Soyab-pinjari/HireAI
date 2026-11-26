@@ -79,3 +79,57 @@ export const GetJobDetails = async (jobId) => {
   const response = await api.get(`/job/job-details/${jobId}`);
   return response.data;
 };
+
+
+///jobseeker
+export const getJobSeekerProfile = async () => {
+    const res = await api.get("/user/jobseeker/profile");
+    return res.data;
+};
+
+export const updateJobSeekerProfile = async (data) => {
+    const res = await api.put(
+        "/user/jobseeker/profile",
+        data
+    );
+    return res.data;
+};
+
+export const uploadJobSeekerProfileImage = async (file) => {
+    const formData = new FormData();
+
+    formData.append("profileImage", file);
+
+    const res = await api.post(
+        "/user/jobseeker/profile/image",
+        formData
+    );
+
+    return res.data;
+};
+
+export const uploadJobSeekerResume = async (file) => {
+
+    const formData = new FormData();
+
+    formData.append("resume", file);
+
+    const res = await api.post(
+        "/user/jobseeker/profile/resume",
+        formData
+    );
+
+    return res.data;
+};
+
+
+export const applyForJob = async (jobId, coverLetter) => {
+    const res = await api.post("/application/apply", {
+        jobId,
+        coverLetter
+    });
+
+    return res.data;
+};
+
+

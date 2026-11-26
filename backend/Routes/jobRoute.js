@@ -13,10 +13,10 @@ getJobDetails,
 } = require("../Controller/JobController");
 const { authenticate, authorize } = require("../Middleware/auth");
 
+router.get("/all", getAllJobs);
 router.post("/create", authenticate,authorize("recruiter"),createJob);
 
 router.get("/company-jobs",authenticate,authorize("recruiter"),getMyCompanyJobs);
-router.get("/all", getAllJobs);
 
 router.get("/job-details/:jobId", getJobDetails);
 

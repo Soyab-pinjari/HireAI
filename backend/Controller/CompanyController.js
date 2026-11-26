@@ -5,7 +5,7 @@ const Job = require("../Modal/Job");
 const User = require("../Modal/User")
 const uploadImage = require("../Utills/uploadImage");
 
-// CREATE COMPANY
+
 
 const createCompany = async (req, res) => {
   try {
@@ -126,8 +126,6 @@ const createCompany = async (req, res) => {
   }
 };
 
-
-// GET ALL COMPANIES
 const getAllCompanies = async (req, res) => {
   try {
     const companies = await Company.find()

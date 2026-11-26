@@ -9,6 +9,8 @@ const connect=require("./Config/db");
 const authRoute=require("./Routes/authRoute");
 const userRoutes = require("./Routes/userRoute"); 
 const companyRoutes = require("./Routes/companyRoute")
+const resumeRoute = require("./Routes/resumeRoutes")
+const applicationRoutes = require('./Routes/applicationRoutes')
 const jobRoutes = require("./Routes/jobRoute");
 connect();
 
@@ -21,6 +23,8 @@ app.use('/auth',authRoute);
 app.use('/user',userRoutes);
 app.use('/company',companyRoutes);
 app.use('/job',jobRoutes);
+app.use('/resume',resumeRoute);
+app.use('/application',applicationRoutes);
 const PORT = process.env.PORT||3000;
 
 app.listen(PORT,()=>{

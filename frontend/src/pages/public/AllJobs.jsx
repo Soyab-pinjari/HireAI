@@ -10,6 +10,7 @@ const AllJobs = () => {
   const [jobType, setJobType] = useState("All");
 
   const fetchJobs = async () => {
+  
     try {
       const res = await getAllJobs();
       setJobs(res.data.jobs || []);

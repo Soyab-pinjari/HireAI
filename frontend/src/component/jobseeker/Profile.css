@@ -1,0 +1,557 @@
+.profile-page {
+  min-height: 100vh;
+  background: #f7f8fc;
+  padding: 40px;
+  color: #17233d;
+}
+
+.profile-header {
+  max-width: 1100px;
+  margin: 0 auto 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.profile-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  margin: 0 0 8px;
+}
+
+.profile-header p {
+  color: #718096;
+  margin: 0;
+  font-size: 16px;
+}
+
+.profile-page form {
+  max-width: 1100px;
+  margin: auto;
+}
+
+.profile-card {
+  background: #fff;
+  padding: 35px;
+  border-radius: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+  border: 1px solid #edf0f5;
+}
+
+.section-heading {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 35px;
+}
+
+.section-icon {
+  width: 55px;
+  height: 55px;
+  background: #eef0ff;
+  border-radius: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+}
+
+.section-heading h2 {
+  margin: 0 0 6px;
+  font-size: 24px;
+  color: #101d36;
+}
+
+.section-heading p {
+  margin: 0;
+  color: #718096;
+  font-size: 15px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 25px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.full-width {
+  grid-column: span 2;
+}
+
+.form-group label {
+  font-size: 15px;
+  font-weight: 500;
+  color: #263550;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 16px;
+  border: 1px solid #dfe3eb;
+  border-radius: 12px;
+  outline: none;
+  font-size: 15px;
+  font-family: inherit;
+  color: #263550;
+  background: white;
+  box-sizing: border-box;
+  transition: 0.2s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #5145ff;
+  box-shadow: 0 0 0 3px rgba(81, 69, 255, 0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #a0a9b8;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.form-group small {
+  color: #8290a5;
+  font-size: 12px;
+}
+
+.profile-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin: 25px 0 40px;
+}
+
+.profile-actions button {
+  background: #5145ff;
+  color: white;
+  border: none;
+  padding: 15px 35px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.profile-actions button:hover {
+  background: #392de0;
+}
+
+.profile-actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.profile-message {
+  margin-top: 20px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #eef2ff;
+  color: #4338ca;
+  font-size: 14px;
+}
+
+.profile-image-section {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 25px;
+  background: #fafbff;
+  border: 1px solid #e9ecf5;
+  border-radius: 16px;
+  margin-bottom: 10px;
+}
+
+.profile-avatar-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 115px;
+  height: 115px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #eef0ff;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+}
+
+.profile-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.camera-icon {
+  position: absolute;
+  bottom: 3px;
+  right: 2px;
+  width: 32px;
+  height: 32px;
+  background: #5145ff;
+  color: white;
+  border: 3px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+}
+
+.profile-image-content {
+  flex: 1;
+}
+
+.profile-image-content h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #17233d;
+}
+
+.profile-image-content p {
+  margin: 0 0 16px;
+  font-size: 14px;
+  color: #718096;
+  line-height: 1.5;
+}
+
+.image-upload-actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.upload-image-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #5145ff;
+  color: #fff;
+  padding: 11px 22px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.upload-image-btn:hover {
+  background: #392de0;
+}
+
+.image-format {
+  color: #8a94a6;
+  font-size: 12px;
+}
+
+.image-message {
+  display: block;
+  margin-top: 12px;
+  color: #5145ff;
+  font-size: 13px;
+}
+
+.company-logo-section {
+  width: 100%;
+}
+
+.company-logo-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.company-logo-upload {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.company-logo-preview {
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+  border: 1px solid #111;
+  border-radius: 20px;
+  background: #f8fafc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #98a2b3;
+  overflow: hidden;
+}
+
+.company-logo-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-logo-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.company-logo-file-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 15px;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  min-height: 76px;
+}
+
+.company-logo-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 20px;
+  border-radius: 11px;
+  background: #eef2ff;
+  color: #4f46ff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.company-logo-button:hover {
+  background: #e0e7ff;
+}
+
+.company-logo-button:has(+ input:disabled) {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.company-logo-filename {
+  font-size: 16px;
+  color: #111827;
+}
+
+.company-logo-hint {
+  margin: 10px 0 0;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.image-message {
+  display: block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #64748b;
+}
+
+@media (max-width: 550px) {
+  .company-logo-upload {
+    gap: 12px;
+  }
+
+  .company-logo-preview {
+    width: 80px;
+    height: 80px;
+    border-radius: 14px;
+  }
+
+  .company-logo-file-row {
+    gap: 10px;
+    padding: 12px;
+  }
+
+  .company-logo-button {
+    padding: 10px 14px;
+    font-size: 14px;
+  }
+
+  .company-logo-filename {
+    font-size: 14px;
+  }
+
+  .company-logo-hint {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    padding: 20px 12px;
+  }
+
+  .profile-card {
+    padding: 22px 16px;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .full-width {
+    grid-column: span 1;
+  }
+
+  .section-heading h2 {
+    font-size: 20px;
+  }
+
+  .profile-header h1 {
+    font-size: 25px;
+  }
+}
+
+/* 
+resume */
+
+.resume-section {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 20px;
+  padding: 25px;
+  background: #fafbff;
+  border: 1px solid #e9ecf5;
+  border-radius: 16px;
+  margin-top: 10px;
+}
+
+.resume-icon {
+  width: 55px;
+  height: 55px;
+  min-width: 55px;
+  border-radius: 12px;
+  background: #eef0ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+.resume-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.resume-content h3 {
+  margin: 0 0 8px;
+  font-size: 19px;
+  color: #17233d;
+}
+
+.resume-content > p {
+  font-size: 14px;
+  color: #718096;
+  margin-bottom: 18px;
+}
+
+.no-resume {
+  padding: 12px;
+  background: white;
+  border: 1px dashed #dfe3eb;
+  border-radius: 10px;
+}
+
+.resume-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 15px;
+}
+
+.resume-file-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.resume-file-info > div {
+  min-width: 0;
+}
+
+.resume-file-info strong {
+  display: block;
+  font-size: 14px;
+  overflow-wrap: anywhere;
+  color: #263550;
+}
+
+.resume-file-info small {
+  display: block;
+  margin-top: 5px;
+  color: #8a94a6;
+}
+
+.pdf-icon {
+  background: #fff0f0;
+  color: #e53935;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.resume-upload-btn,
+.view-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #5145ff;
+  color: white;
+  padding: 11px 20px;
+  border-radius: 9px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+}
+
+.resume-upload-btn:hover,
+.view-resume-btn:hover {
+  background: #392de0;
+}
+
+.resume-message {
+  display: block;
+  margin-top: 12px;
+  color: #5145ff;
+}
+
+@media (max-width: 550px) {
+  .resume-section {
+    padding: 17px;
+    gap: 12px;
+  }
+
+  .resume-file {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

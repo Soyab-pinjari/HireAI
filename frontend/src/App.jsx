@@ -33,7 +33,7 @@ useEffect(() => {
       <Route path="/register" element={<Registration />} />
 <Route path="/jobs/:jobId" element={<JobPage />} />
       <Route
-        path="/jobseeker"
+        path="/jobseeker/dashboard"
         element={
           <ProtectedRoute allowedRoles={["jobseeker"]}>
             <Jobseeker />

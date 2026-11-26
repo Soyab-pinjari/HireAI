@@ -41,11 +41,11 @@ function Login() {
 
     // Verify role
     if (user.role === "jobseeker") {
-      navigate("/jobseeker", { replace: true });
+      navigate("/jobseeker/dashboard", { replace: true });
     } else if (user.role === "recruiter") {
       navigate("/recruiter/dashboard", { replace: true });
     } else if (user.role === "admin") {
-      navigate("/admin", { replace: true });
+      navigate("/admin/dashboard", { replace: true });
     } else {
       navigate("/", { replace: true });
     }

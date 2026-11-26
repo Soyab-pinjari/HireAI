@@ -30,14 +30,22 @@ const register=async(req,res)=>{
    
 
 const hashedPassword = await bcrypt.hash(password, 10);
-
 const user = await User.create({
-    name,
+    name: name.trim(),
     email: email.toLowerCase().trim(),
     password: hashedPassword,
-    role
+    role,
+    ...(role === "jobseeker" && {
+        profileImage: "",
+        location: "",
+        phone: "",
+        bio: "",
+        skills: [],
+        experience: 0,
+        education: "",
+        resume: null
+    })
 });
-
 return res.status(201).json({
     success: true,
     message: "Registration successful",
