@@ -283,7 +283,7 @@ const confirmDelete = async () => {
                         to={`/jobs/${job._id}`}
                         className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl py-3 text-sm font-semibold transition"
                       >
-                        View Details & Apply →
+                        View Details
                       </Link>
 
                       <div className='flex gap-6'>

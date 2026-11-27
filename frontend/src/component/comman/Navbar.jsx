@@ -92,7 +92,7 @@ console.log(isAuthenticated)
         </li>
 
         <li>
-          <Link to="/jobs" className="hover:text-blue-700">
+          <Link to="#jobs" className="hover:text-blue-700">
             Jobs
           </Link>
         </li>

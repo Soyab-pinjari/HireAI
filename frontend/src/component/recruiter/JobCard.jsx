@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 
 const JobCard = ({ job, onDelete }) => {
+
+
   return (
     <div className="bg-white rounded-xl shadow hover:shadow-lg transition p-6">
 

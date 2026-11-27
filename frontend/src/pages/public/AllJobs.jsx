@@ -10,7 +10,7 @@ const AllJobs = () => {
   const [jobType, setJobType] = useState("All");
 
   const fetchJobs = async () => {
-  
+    console.log("fethicng")
     try {
       const res = await getAllJobs();
       setJobs(res.data.jobs || []);
@@ -51,7 +51,7 @@ const AllJobs = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div  className="min-h-screen bg-slate-50">
 
       <main className="max-w-7xl mx-auto px-5 py-10">
 

@@ -11,6 +11,7 @@ import {Link} from 'react-router-dom'
 import Applicants from "../../component/recruiter/Applicants";
 import {ArrowLeft} from 'lucide-react'
 import PublishedJobs from "../../component/recruiter/PublishedJobs";
+import RecruiterDashboard from "../../component/recruiter/RecruiterDashboard";
 function Recruiter() {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -74,14 +75,10 @@ setData(response);
   ) : error ? (
     <p className="text-red-500 mt-6">{error}</p>
   ) : (
-    <div className="mt-6 bg-white p-6 rounded-xl shadow-sm">
-      <h2 className="font-semibold text-lg">
-        Dashboard Overview
-      </h2>
-
-      <p className="text-gray-500 mt-2">
-        Your recruiter account is ready.
-      </p>
+    <div className="mt-6 bg-white  rounded-xl shadow-sm">
+     <RecruiterDashboard
+  setActivePage={setActivePage}
+/>
     </div>
   )}
 </div>

@@ -4,11 +4,14 @@ import { useSelector } from "react-redux";
 import { getJobseekerDashboard } from "../../services/api";
 import Sidebar from "../../component/jobseeker/sidebar";
 import Profile from "../../component/jobseeker/Profile";
-import Jobs from "../../component/jobseeker/Jobs";
+
 import SavedJobs from "../../component/jobseeker/SavedJobs";
 import { Link } from "react-router-dom";
 
 import {ArrowLeft} from 'lucide-react'
+import MyApplications from "../../component/jobseeker/MyApplications";
+import JobseekerDashboard from "../../component/jobseeker/jobseekerDashboard";
+import ResumeAnalyzer from "../../component/jobseeker/ResumeAnalyzer";
 function Jobseeker() {
   const [activePage, setActivePage] = useState("dashboard");
    console.log("Jobseeker component rendered");
@@ -55,14 +58,7 @@ function Jobseeker() {
       case "dashboard":
         return (
    <div>
-  <h1 className="text-3xl font-bold text-gray-800">
-    Jobseeker Dashboard
-  </h1>
-
-  <p className="text-gray-500 mt-2">
-    Welcome to your Jobseeker dashboard.
-  </p>
-
+ 
   <Link
     to="/"
     className="inline-flex items-center gap-2 mt-4 text-blue-700 font-medium hover:text-blue-900 transition-colors"
@@ -70,21 +66,21 @@ function Jobseeker() {
     <ArrowLeft size={18} />
     <span>Back to Home</span>
   </Link>
-
   {loading ? (
     <p className="mt-6">Loading dashboard...</p>
   ) : error ? (
     <p className="text-red-500 mt-6">{error}</p>
   ) : (
-    <div className="mt-6 bg-white p-6 rounded-xl shadow-sm">
-      <h2 className="font-semibold text-lg">
-        Dashboard Overview
-      </h2>
+<JobseekerDashboard/>
+    // <div className="mt-6 bg-white p-6 rounded-xl shadow-sm">
+    //   <h2 className="font-semibold text-lg">
+    //     Dashboard Overview
+    //   </h2>
 
-      <p className="text-gray-500 mt-2">
-        Your Jobseeker account is ready.
-      </p>
-    </div>
+    //   <p className="text-gray-500 mt-2">
+    //     Your Jobseeker account is ready.
+    //   </p>
+    // </div>
   )}
 </div>
         );
@@ -93,14 +89,15 @@ function Jobseeker() {
         return <Profile />;
 
       case "applied-jobs":
-        return <Jobs/>;
+        return <MyApplications/>;
 
       case "saved-jobs":
         return <SavedJobs/>;
 
       // case "applicants":
       //   return <Applicants />;
-
+        case "resume-analyzer":
+    return <ResumeAnalyzer />;
       default:
         return <Profile />;
     }

@@ -12,6 +12,8 @@ const companyRoutes = require("./Routes/companyRoute")
 const resumeRoute = require("./Routes/resumeRoutes")
 const applicationRoutes = require('./Routes/applicationRoutes')
 const jobRoutes = require("./Routes/jobRoute");
+const resumeAIRoutes= require("./Routes/resumeAIRoutes")
+const savedJobRoutes = require("./Routes/savedJobRoutes");
 connect();
 
 app.use(cors({
@@ -23,6 +25,8 @@ app.use('/auth',authRoute);
 app.use('/user',userRoutes);
 app.use('/company',companyRoutes);
 app.use('/job',jobRoutes);
+app.use("/saved-jobs", savedJobRoutes);
+app.use("/api/resume-ai", resumeAIRoutes);
 app.use('/resume',resumeRoute);
 app.use('/application',applicationRoutes);
 const PORT = process.env.PORT||3000;

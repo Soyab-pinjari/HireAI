@@ -27,7 +27,7 @@ function Sidebar({ activePage, setActivePage }) {
 
   const dispatch = useDispatch();
  const user = useSelector((state)=>state.auth.user);
-   console.log("Logged In User:", user);
+ 
   const menuItems = [
   {
     name: "Dashboard",
@@ -51,7 +51,7 @@ function Sidebar({ activePage, setActivePage }) {
   },
   {
     name: "AI Tools",
-    id: "AI-tools",
+    id: "resume-analyzer",
     icon: Sparkles,
   },
 ];

@@ -25,8 +25,8 @@ function Home() {
             <br />
             analyze your resume, and get personalized job recommendations.
           </p>
-
-        <Search/>
+{/* 
+        <Search/> */}
        <PopJobs/>
        {/* <Footer/> */}
         </div>

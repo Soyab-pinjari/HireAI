@@ -3,62 +3,199 @@ const User = require("../Modal/User");
 const cloudinary = require("../Config/cloudinary");
 const uploadImage = require("../Utills/uploadImage");
 const Resume = require("../Modal/Resume");
-
+const Job  = require("../Modal/Job");
+const Application = require("../Modal/Application")
 const uploadResumeFile = require("../Utills/uploadResume");
 
 const getJobseekerDashboard = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .select("-password");
+    const applicantId = req.user?._id;
 
-    if (!user) {
-      return res.status(404).json({
+    if (!applicantId) {
+      return res.status(401).json({
         success: false,
-        message: "Jobseeker not found"
+        message: "Unauthorized. Please login first.",
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Jobseeker dashboard data",
-      user
-    });
+    // Fetch all applications of logged-in jobseeker
+    const applications = await Application.find({
+      applicant: applicantId,
+    })
+      .populate({
+        path: "job",
+        select:
+          "jobTitle type experience salary vacancies address skills createdAt company",
+      })
+      .populate({
+        path: "resume",
+        select: "fileName fileUrl",
+      })
+      .sort({ createdAt: -1 })
+      .lean();
 
+    // Calculate application statistics and fetch latest jobs
+    const [
+      totalApplications,
+      pending,
+      reviewed,
+      shortlisted,
+      rejected,
+      accepted,
+      latestJobs,
+    ] = await Promise.all([
+      Application.countDocuments({ applicant: applicantId }),
+
+      Application.countDocuments({
+        applicant: applicantId,
+        status: "pending",
+      }),
+
+      Application.countDocuments({
+        applicant: applicantId,
+        status: "reviewed",
+      }),
+
+      Application.countDocuments({
+        applicant: applicantId,
+        status: "shortlisted",
+      }),
+
+      Application.countDocuments({
+        applicant: applicantId,
+        status: "rejected",
+      }),
+
+      Application.countDocuments({
+        applicant: applicantId,
+        status: "accepted",
+      }),
+
+      Job.find()
+        .select(
+          "jobTitle type experience salary vacancies address skills createdAt company"
+        )
+        .sort({ createdAt: -1 })
+        .limit(6)
+        .lean(),
+    ]);
+
+    // Send dashboard data
+    return res.status(200).json({
+      success: true,
+      message: "Jobseeker dashboard data fetched successfully",
+
+      stats: {
+        totalApplications,
+        pending,
+        reviewed,
+        shortlisted,
+        rejected,
+        accepted,
+      },
+
+      recentApplications: applications.slice(0, 5),
+
+      applications,
+
+      latestJobs,
+    });
   } catch (error) {
-    res.status(500).json({
+    console.error("Jobseeker dashboard error:", error);
+
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: "Failed to load jobseeker dashboard",
+      error: error.message,
     });
   }
 };
+
+
+
 
 
 const getRecruiterDashboard = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id)
-      .select("-password");
+    // Assumes auth middleware attaches the logged-in user's company ID
+    const companyId = req.user.company;
 
-    if (!user) {
-      return res.status(404).json({
+    if (!companyId) {
+      return res.status(400).json({
         success: false,
-        message: "Recruiter not found"
+        message: "Company ID not found",
       });
     }
 
-    res.status(200).json({
-      success: true,
-      message: "Recruiter dashboard data",
-      user
-    });
+    // Find jobs posted by this company
+    const jobs = await Job.find({ company: companyId })
+      .select("_id jobTitle type address salary vacancies  createdAt")
+      .sort({ createdAt: -1 });
 
+    const jobIds = jobs.map((job) => job._id);
+
+    // Count applications for this company's jobs
+    const [
+      totalApplicants,
+      pending,
+      reviewed,
+      shortlisted,
+      rejected,
+      accepted,
+      recentApplicants,
+    ] = await Promise.all([
+      Application.countDocuments({ job: { $in: jobIds } }),
+      Application.countDocuments({
+        job: { $in: jobIds },
+        status: "pending",
+      }),
+      Application.countDocuments({
+        job: { $in: jobIds },
+        status: "reviewed",
+      }),
+      Application.countDocuments({
+        job: { $in: jobIds },
+        status: "shortlisted",
+      }),
+      Application.countDocuments({
+        job: { $in: jobIds },
+        status: "rejected",
+      }),
+      Application.countDocuments({
+        job: { $in: jobIds },
+        status: "accepted",
+      }),
+      Application.find({ job: { $in: jobIds } })
+        .populate("applicant", "name email profileImage")
+        .populate("job", "jobTitle")
+        .populate("resume")
+        .sort({ createdAt: -1 })
+        .limit(5),
+    ]);
+
+    return res.status(200).json({
+      success: true,
+      stats: {
+        totalJobs: jobs.length,
+        totalApplicants,
+        pending,
+        reviewed,
+        shortlisted,
+        rejected,
+        accepted,
+      },
+      recentApplicants,
+      jobs,
+    });
   } catch (error) {
-    res.status(500).json({
+    console.error("Recruiter dashboard error:", error);
+
+    return res.status(500).json({
       success: false,
-      message: error.message
+      message: "Failed to load recruiter dashboard",
     });
   }
 };
-
 
 const getAdminDashboard = async (req, res) => {
   try {
@@ -338,4 +475,7 @@ const uploadJobSeekerResume = async (req, res) => {
         });
     }
 };
+
+
+
 module.exports ={uploadJobSeekerResume,getJobseekerDashboard,getAdminDashboard,getRecruiterDashboard,updateProfile,getProfile,uploadProfileImage}

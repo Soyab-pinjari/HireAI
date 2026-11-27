@@ -9,7 +9,7 @@ function Layout() {
     <div>
         <Navbar/>
       <Home/>
-      <AllJobs/>
+      <AllJobs id="all-jobs"/>
       <Footer/>
     </div>
   )

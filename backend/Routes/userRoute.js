@@ -36,6 +36,7 @@ router.post(
     resumeUpload.single("resume"),
     uploadJobSeekerResume
 );
+
 router.get('/recruiter/dashboard',authenticate,authorize("recruiter"),getRecruiterDashboard);
 router.get('/admin/dashboard',authenticate,authorize("admin"),getAdminDashboard);
 module.exports=router

@@ -3,7 +3,9 @@
 @theme {
   --font-sans: "Poppins", sans-serif;
 }
-
+html {
+  scroll-behavior: smooth;
+}
 /* ================= BASE STYLES ================= */
 
 @layer base {

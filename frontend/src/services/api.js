@@ -133,3 +133,75 @@ export const applyForJob = async (jobId, coverLetter) => {
 };
 
 
+export const getMyApplications = async () => {
+    const res = await api.get(
+        "/application/jobSeeker-applications"
+    );
+
+    return res.data;
+};
+
+
+// Save Job
+export const saveJobApi = async (jobId) => {
+    const res = await api.post("/saved-jobs/save", {
+        jobId
+    });
+
+    return res.data;
+};
+
+// Get Saved Jobs
+export const getSavedJobsApi = async () => {
+    const res = await api.get("/saved-jobs");
+    return res.data;
+};
+
+// Remove Saved Job
+export const removeSavedJobApi = async (id) => {
+    const res = await api.delete(`/saved-jobs/${id}`);
+    return res.data;
+};
+
+
+/// recruiter applied jobs
+
+
+// Get recruiter applicants
+export const getRecruiterApplicantsApi = async () => {
+    const res = await api.get(
+        "/application/recruiter/applicants"
+    );
+
+    return res.data;
+};
+
+// Update applicant status
+export const updateApplicantStatusApi = async (
+    applicationId,
+    status
+) => {
+    const res = await api.put(
+        `/application/recruiter/applicants/${applicationId}/status`,
+        { status }
+    );
+
+    return res.data;
+};
+
+// --------------ai
+export const analyzeMyResumeApi = async () => {
+    const response = await api.post(
+        "/api/resume-ai/analyze"
+    );
+
+    return response.data;
+};
+
+export const getResumeAnalysisHistoryApi = async () => {
+    const response = await api.get(
+        "/api/resume-ai/history"
+    );
+
+    return response.data;
+};
